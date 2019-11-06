@@ -49,9 +49,9 @@ body {
           width: 100%;
           border-radius: 6px;
           left: 0;
-          /* bottom: -100px; */
           top: 70px;
-          background-color: #1b232b; }
+          background-color: #1b232b;
+          display: none; }
           .main-content .select-section .custom-select .custom-select__visible-section .custom-select__list ul {
             padding-left: 20px; }
             .main-content .select-section .custom-select .custom-select__visible-section .custom-select__list ul li {
@@ -59,6 +59,8 @@ body {
               .main-content .select-section .custom-select .custom-select__visible-section .custom-select__list ul li:hover {
                 color: #fff;
                 cursor: pointer; }
+        .main-content .select-section .custom-select .custom-select__visible-section .open-menu {
+          display: block; }
   .main-content .card-section {
     display: flex;
     justify-content: space-between;
@@ -128,18 +130,16 @@ body {
               background: #3eb5f1; }
             .main-content .card-section .card .card__data-section .percent-change-section .custom-checkbox-wrap .checkbox input:checked + .checkbox__custom:after {
               left: 0px; }
-        .main-content .card-section .card .card__data-section .card__data-section__changeable-data .changeable-data {
+        .main-content .card-section .card .card__data-section .card__data-section-changeable-data .changeable-data {
           display: flex;
           justify-content: space-between; }
-          .main-content .card-section .card .card__data-section .card__data-section__changeable-data .changeable-data span {
+          .main-content .card-section .card .card__data-section .card__data-section-changeable-data .changeable-data span {
             font-size: 14px; }
-          .main-content .card-section .card .card__data-section .card__data-section__changeable-data .changeable-data .text {
+          .main-content .card-section .card .card__data-section .card__data-section-changeable-data .changeable-data .text {
             color: #68786c; }
-          .main-content .card-section .card .card__data-section .card__data-section__changeable-data .changeable-data .data {
+          .main-content .card-section .card .card__data-section .card__data-section-changeable-data .changeable-data .data {
             color: #6dbe45; }
-          .main-content .card-section .card .card__data-section .card__data-section__changeable-data .changeable-data .text-green {
-            color: #6dbe45; }
-          .main-content .card-section .card .card__data-section .card__data-section__changeable-data .changeable-data .text-red {
+          .main-content .card-section .card .card__data-section .card__data-section-changeable-data .changeable-data .text-red {
             color: red; }
     .main-content .card-section .card-ethereum {
       background: url(../img/Ethereum.png) no-repeat;

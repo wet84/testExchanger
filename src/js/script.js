@@ -1,111 +1,256 @@
-const selectArrow = document.querySelector('.custom-select__visible-section .fa-angle-down');
-const hideList = document.querySelector('.custom-select__visible-section .custom-select__list');
-const selectedCurrency = document.querySelector('.custom-select__visible-section .custom-select__selected-currency');
+// https://apiv2.bitcoinaverage.com/#permissions
 
+// pay access: 
+//https://apiv2.bitcoinaverage.com/indices/global/ticker/all?crypto=BTC&fiat=USD,EUR,GBP,RUB
+
+const arrowButton = document.querySelector('.custom-select__visible-section .arrow-button');
+const currencyMenuList = document.querySelector('.custom-select__visible-section .custom-select__list');
+const selectedCurrency = document.querySelector('.custom-select__visible-section .custom-select__selected-currency');
+const changeCurrencyMenu = document.querySelector('.custom-select__visible-section');
+
+
+const changeColorData = document.querySelectorAll('.changeable-data .data');
+const checkboxState = document.querySelectorAll('.checkbox input');
+
+const mainUrl = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/';
+ 
 
 //*************** BITCOIN ***************
 const pricedataBtc = document.querySelector('.card-bitcoin .price-data');
 const checkBoxBtc = document.querySelector('.card-bitcoin input[type="checkbox"]');
-const allDataBtc = document.querySelectorAll('.card-bitcoin .data');
-const urlBtcUsd = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCUSD';
-const urlBtcEur = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCEUR';
-const urlBtcGbp = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCGBP';
-const urlBtcRub = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCRUB';
-
-//*************** ETHEREUM ***************
-const pricedataEth = document.querySelector('.card-ethereum .price-data');
-const checkBoxEth = document.querySelector('.card-ethereum input[type="checkbox"]');
-const allDataEth = document.querySelectorAll('.card-ethereum .data');
-const urlEthUsd = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/ETHUSD';
-const urlEthEur = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/ETHEUR';
-const urlEthGbp = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/ETHGBP';
-const urlEthRub = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/ETHRUB';
+const nodeListBtc = document.querySelectorAll('.card-bitcoin .data');
+const BTC_USD = mainUrl +'BTCUSD';
+const BTC_EUR = mainUrl +'BTCEUR';
+const BTC_GBP = mainUrl +'BTCGBP';
+const BTC_UAH = mainUrl +'BTCUAH';
 
 //*************** LITECOIN ***************
 const pricedataLtc = document.querySelector('.card-litecoin .price-data');
 const checkBoxLtc = document.querySelector('.card-litecoin input[type="checkbox"]');
-const allDataLtc = document.querySelectorAll('.card-litecoin .data');
-const urlLtcUsd = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/LTCUSD';
-const urlLtcEur = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/LTCEUR';
-const urlLtcGbp = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/LTCGBP';
-const urlLtcRub = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/LTCRUB';
+const nodeListLtc = document.querySelectorAll('.card-litecoin .data');
+const LTC_USD = mainUrl +'LTCUSD';
+const LTC_EUR = mainUrl +'LTCEUR';
+const LTC_GBP = mainUrl +'LTCGBP';
+const LTC_UAH = mainUrl +'LTCUAH';
 
+//*************** ETHEREUM ***************
+const pricedataEth = document.querySelector('.card-ethereum .price-data');
+const checkBoxEth = document.querySelector('.card-ethereum input[type="checkbox"]');
+const nodeListEth = document.querySelectorAll('.card-ethereum .data');
+const ETH_USD = mainUrl +'ETHUSD';
+const ETH_EUR = mainUrl +'ETHEUR';
+const ETH_GBP = mainUrl +'ETHGBP';
+const ETH_UAH = mainUrl +'ETHUAH';
 
-let linkCheck = () => {
-  if (selectedCurrency.innerHTML=='USD') {
-    getDataApi(urlBtcUsd);
-  } else if(selectedCurrency.innerHTML=='EUR') {
-    getDataApi(urlBtcEur);
-  } else if(selectedCurrency.innerHTML=='GBP') {
-    getDataApi(urlBtcGbp);
-  } else if(selectedCurrency.innerHTML=='RUB') {
-    getDataApi(urlBtcRub);
+const convertCurencySymbol = {
+  USD: "$",
+  EUR: "€", 
+  GBP: "£",
+  UAH: "₴",
+};
+
+const percentSymbol = "%";
+
+const status = (response) => {
+  if (response.status !== 200) {
+    return Promise.reject(new Error(response.statusText))
+  }
+  return Promise.resolve(response)
+};
+
+const json = (response) => {
+  return response.json()
+};
+
+let getDataBtc = (url) => {
+  fetch(url)
+    .then(status)
+    .then(json)
+    .then(data => {
+      const {ask, display_symbol:curSymbol, changes: {price, percent}} = data;
+     
+      displayDataBtc(ask, percent, price, curSymbol);
+    })
+    .catch(error => console.error("ERROR:", error))
+};
+
+let getDataLtc = (url) => {
+  fetch(url)
+    .then(status)
+    .then(json)
+    .then(data => {
+      const {ask, display_symbol:curSymbol, changes: {price, percent}} = data;
+     
+      displayDataLtc(ask, percent, price, curSymbol);
+    })
+    .catch(error => console.error("ERROR:", error))
+};
+
+let getDataEth = (url) => {
+  fetch(url)
+    .then(status)
+    .then(json)
+    .then(data => {
+      const {ask, display_symbol:curSymbol, changes: {price, percent}} = data;
+     
+      displayDataEth(ask, percent, price, curSymbol);
+    })
+    .catch(error => console.error("ERROR:", error))
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  getDataBtc(BTC_USD);
+  getDataLtc(LTC_USD); 
+  getDataEth(ETH_USD); 
+});
+
+//checked currency
+const currencySelection = () => {
+  if (selectedCurrency.innerHTML==='USD') {
+    getDataBtc(BTC_USD); 
+    getDataLtc(LTC_USD); 
+    getDataEth(ETH_USD); 
+  } else if(selectedCurrency.innerHTML==='EUR') {
+    getDataBtc(BTC_EUR);
+    getDataLtc(LTC_EUR);
+    getDataEth(ETH_EUR);
+  } else if(selectedCurrency.innerHTML==='GBP') {
+    getDataBtc(BTC_GBP);
+    getDataLtc(LTC_GBP);
+    getDataEth(ETH_GBP);
+  } else if(selectedCurrency.innerHTML=='UAH') {
+    getDataBtc(BTC_UAH);
+    getDataLtc(LTC_UAH);
+    getDataEth(ETH_UAH);
   } else {
     console.log('return');
+    return
   }
 };
 
-getDataApi(urlBtcUsd);
+const defineSymbol = (currencySymbol) => {
+  let selectCurencySymbol = '';
 
-function getDataApi(url){
-fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      let ask = data.ask;
-      let price = data.changes.price;
-      let percent = data.changes.percent;
+  for (let key in convertCurencySymbol) {
+    if(currencySymbol.slice(4) === key) {
+      selectCurencySymbol = convertCurencySymbol[key]
+    }
+  }
+  return selectCurencySymbol
+};
 
-      setData(ask, percent, price);
-      setFirstData(price);
- });
-}
+const setPriceData = (nodeList, price, setCurencySymbol) => {
+  let priceArr = Object.keys(price).map((key) => {
+    return [price[key]];
+  });
+ 
+  for (let i = 0; i < nodeList.length; i++) {
+    let element = nodeList[i];
 
-let setData = (ask, percent, price) => {
-  pricedataBtc.innerText = '$' + ' ' + ask;
+    for (let j = 0; j < priceArr.length; j++) {
+      element.innerHTML = priceArr[i] + setCurencySymbol;
+    }
+  }
+};
+
+const setPercentData = (nodeList, percent, percentSymbol) => {
+  let percentArr = Object.keys(percent).map((key) => {
+    return [percent[key]];
+  });
+ 
+  for (let i = 0; i < nodeList.length; i++) {
+    let element = nodeList[i];
+
+    for (let j = 0; j < percentArr.length; j++) {
+      element.innerHTML = percentArr[i] + percentSymbol;
+    }
+  }
+};
+
+const displayDataBtc = (ask, percent, price, currencySymbol) => { 
+  let setCurencySymbol = defineSymbol(currencySymbol);
+  pricedataBtc.innerText = setCurencySymbol + ' ' + ask;
+
+  //init:
+  setPriceData(nodeListBtc, price, setCurencySymbol);
+  changeColor();
 
   checkBoxBtc.addEventListener('click', () => {
-    
     if (checkBoxBtc.checked) {
-      allDataBtc[0].innerHTML = percent.hour + '%';
-      allDataBtc[1].innerHTML = percent.day + '%';
-      allDataBtc[2].innerHTML = percent.week + '%';
-      allDataBtc[3].innerHTML = percent.month + '%';
-    }else {
-      allDataBtc[0].innerHTML = price.hour + '$';
-      allDataBtc[1].innerHTML = price.day + '$'; 
-      allDataBtc[2].innerHTML = price.week + '$';
-      allDataBtc[3].innerHTML = price.month + '$';
+      setPercentData(nodeListBtc, percent, percentSymbol);
+    } else {
+      setPriceData(nodeListBtc, price, setCurencySymbol);
     }
   }, false);
 };
 
-let setFirstData = (price) => {
-  allDataBtc[0].innerHTML = price.hour + '$';
-  allDataBtc[1].innerHTML = price.day + '$';
-  allDataBtc[2].innerHTML = price.week + '$';
-  allDataBtc[3].innerHTML = price.month + '$';
-}
+const displayDataLtc = (ask, percent, price, currencySymbol) => {
+  let setCurencySymbol = defineSymbol(currencySymbol);
+  pricedataLtc.innerText = setCurencySymbol + ' ' + ask;
+  
+  //init:
+  setPriceData(nodeListLtc, price, setCurencySymbol);
+  changeColor();
 
-//*************** custon slect ***************
-selectArrow.addEventListener('click', () => {
-  if (hideList.style.display == 'none') {
-    hideList.style.display = 'block';
-  } else {
-    hideList.style.display ='none';
-  }
-}, false);
+  checkBoxLtc.addEventListener('click', () => {
+    if (checkBoxLtc.checked) {
+      setPercentData(nodeListLtc, percent, percentSymbol);
+    } else {
+      setPriceData(nodeListLtc, price, setCurencySymbol);
+    }
+  }, false);
+};
 
-hideList.addEventListener('click', (event) => {
+const displayDataEth = (ask, percent, price, currencySymbol) => {
+  let setCurencySymbol = defineSymbol(currencySymbol);
+  pricedataEth.innerText = setCurencySymbol + ' ' + ask;
+  
+  //init:
+  setPriceData(nodeListEth, price, setCurencySymbol);
+  changeColor();
+
+  checkBoxEth.addEventListener('click', () => {
+    if (checkBoxEth.checked) {
+      setPercentData(nodeListEth, percent, percentSymbol);
+    } else {
+      setPriceData(nodeListEth, price, setCurencySymbol);
+    }
+  }, false);
+};
+
+
+//*************** change backlight for data ***************
+const changeColor = () => {
+  changeColorData.forEach((item) => {
+    let i = Number(item.textContent.slice(0, -1));
+      if( i < 0 ) { item.classList.add('text-red') }
+  })
+};
+
+
+//activate menu
+changeCurrencyMenu.addEventListener('click', (event) => {
+  
+  currencyMenuList.classList.toggle('open-menu');
+  
   if (event.target.tagName === "LI") {
     let text = event.target.innerText;
     selectedCurrency.innerText = text;
-    closeList();
-    linkCheck();
-    }
-}, false);
+    currencySelection();
+  }
 
-let closeList = () => {
-  hideList.style.display ='none';
+  if (currencyMenuList.classList.contains('open-menu')) {
+    arrowButton.classList.add('fa-angle-up');
+    arrowButton.classList.remove('fa-angle-down');
+  } else {
+    arrowButton.classList.add('fa-angle-down');
+    arrowButton.classList.remove('fa-angle-up');
+  }
+  checkboxDisable();
+})
+
+const checkboxDisable = () => {
+  checkboxState.forEach((item) => {
+    item.checked = false;
+  })
 };
-
-//*************** end custon slect ***************

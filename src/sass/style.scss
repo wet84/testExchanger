@@ -45,7 +45,7 @@ body {
         padding: 20px;
         position: relative;
 
-        i{
+        i {
           float: right;
           color:#92e8fe;
 
@@ -55,15 +55,14 @@ body {
         }
 
         .custom-select__list {
-          // display:none;
           position: absolute;
           border: 1px solid #92e8fe;
           width: 100%;
           border-radius: 6px;
           left: 0;
-          /* bottom: -100px; */
           top: 70px;
           background-color: #1b232b;
+          display: none;
 
           ul {
             padding-left: 20px;
@@ -77,11 +76,15 @@ body {
             }
           }
         }
+
+        .open-menu {
+          display: block;
+        }
+        
       }
      
     }
   }
-
 
   //*******************card*******************
   .card-section {
@@ -132,6 +135,7 @@ body {
           .custom-checkbox-wrap {
             width: 40px;
             height: 20px;
+            //position: relative;
     
             .checkbox input {
               position: absolute;
@@ -143,7 +147,7 @@ body {
               position: relative;
               padding: 0 0 0 60px;
               cursor: pointer;
-    
+               
               &:before {
                 content: '';
                 position: absolute;
@@ -171,6 +175,7 @@ body {
               }
             }
 
+          
             .checkbox input:checked + .checkbox__custom:before {
               background: #3eb5f1;
             }
@@ -180,9 +185,10 @@ body {
             }
           }
         }
+        
         //*******************end custom-checkbox*******************
 
-        .card__data-section__changeable-data {
+        .card__data-section-changeable-data {
           .changeable-data {
             display: flex;
             justify-content: space-between;
@@ -199,10 +205,6 @@ body {
               color: #6dbe45;
             }
 
-            .text-green {
-              color:#6dbe45; 
-            }
-
             .text-red {
               color: red;
             }
@@ -210,10 +212,8 @@ body {
 
         }
       }
-
     }
 
-    //******card ethereum******
     .card-ethereum {
       background: url(../img/Ethereum.png) no-repeat;
       background-size: cover;
