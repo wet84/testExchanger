@@ -3,11 +3,11 @@
 // pay access: 
 //https://apiv2.bitcoinaverage.com/indices/global/ticker/all?crypto=BTC&fiat=USD,EUR,GBP,RUB
 
-const arrowButton = document.querySelector('.custom-select__visible-section .arrow-button');
-const currencyMenuList = document.querySelector('.custom-select__visible-section .custom-select__list');
-const selectedCurrency = document.querySelector('.custom-select__visible-section .custom-select__selected-currency');
-const changeCurrencyMenu = document.querySelector('.custom-select__visible-section');
 
+const visibleSection = document.querySelector('.custom-select__visible-section');
+const arrowButton = visibleSection.querySelector('.custom-select__visible-section .arrow-button');
+const currencyMenuList = visibleSection.querySelector('.custom-select__visible-section .custom-select__list');
+const selectedCurrency = visibleSection.querySelector('.custom-select__visible-section .custom-select__selected-currency');
 
 const changeColorData = document.querySelectorAll('.changeable-data .data');
 const checkboxState = document.querySelectorAll('.checkbox input');
@@ -16,27 +16,30 @@ const mainUrl = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/';
  
 
 //*************** BITCOIN ***************
-const pricedataBtc = document.querySelector('.card-bitcoin .price-data');
-const checkBoxBtc = document.querySelector('.card-bitcoin input[type="checkbox"]');
-const nodeListBtc = document.querySelectorAll('.card-bitcoin .data');
+const cardBitcoin = document.querySelector('.card-bitcoin');
+const pricedataBtc = cardBitcoin.querySelector('.price-data');
+const checkBoxBtc = cardBitcoin.querySelector('input[type="checkbox"]');
+const nodeListBtc = cardBitcoin.querySelectorAll('.data');
 const BTC_USD = mainUrl +'BTCUSD';
 const BTC_EUR = mainUrl +'BTCEUR';
 const BTC_GBP = mainUrl +'BTCGBP';
 const BTC_UAH = mainUrl +'BTCUAH';
 
 //*************** LITECOIN ***************
-const pricedataLtc = document.querySelector('.card-litecoin .price-data');
-const checkBoxLtc = document.querySelector('.card-litecoin input[type="checkbox"]');
-const nodeListLtc = document.querySelectorAll('.card-litecoin .data');
+const cardLitecoin = document.querySelector('.card-litecoin');
+const pricedataLtc = cardLitecoin.querySelector('.price-data');
+const checkBoxLtc = cardLitecoin.querySelector('input[type="checkbox"]');
+const nodeListLtc = cardLitecoin.querySelectorAll('.data');
 const LTC_USD = mainUrl +'LTCUSD';
 const LTC_EUR = mainUrl +'LTCEUR';
 const LTC_GBP = mainUrl +'LTCGBP';
 const LTC_UAH = mainUrl +'LTCUAH';
 
 //*************** ETHEREUM ***************
-const pricedataEth = document.querySelector('.card-ethereum .price-data');
-const checkBoxEth = document.querySelector('.card-ethereum input[type="checkbox"]');
-const nodeListEth = document.querySelectorAll('.card-ethereum .data');
+const cardEtherium = document.querySelector('.card-ethereum');
+const pricedataEth = cardEtherium.querySelector('.price-data');
+const checkBoxEth = cardEtherium.querySelector('input[type="checkbox"]');
+const nodeListEth = cardEtherium.querySelectorAll('.data');
 const ETH_USD = mainUrl +'ETHUSD';
 const ETH_EUR = mainUrl +'ETHEUR';
 const ETH_GBP = mainUrl +'ETHGBP';
@@ -229,7 +232,7 @@ const changeColor = () => {
 
 
 //activate menu
-changeCurrencyMenu.addEventListener('click', (event) => {
+visibleSection.addEventListener('click', (event) => {
   
   currencyMenuList.classList.toggle('open-menu');
   
